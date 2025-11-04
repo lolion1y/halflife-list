@@ -25,6 +25,7 @@ jobs:
           echo "EASYPRIVACY_URL=https://easylist-downloads.adblockplus.org/easyprivacy.txt" >> $GITHUB_ENV
           echo "CJXLIST_URL=https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjxlist.txt" >> $GITHUB_ENV
           echo "CJX_ANNOYANCE_URL=https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt" >> $GITHUB_ENV
+          echo "CJX_UBLOCK_URL=https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-ublock.txt" >> $GITHUB_ENV
           echo "ANTI_ADBLOCK_KILLER_FILTERS_URL=https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt" >> $GITHUB_ENV
           echo "ANTIADBLOCKFILTERS_URL=https://easylist-downloads.adblockplus.org/antiadblockfilters.txt" >> $GITHUB_ENV
           echo "ABP_FILTERS_ANTI_CV_URL=https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt" >> $GITHUB_ENV
@@ -48,8 +49,9 @@ jobs:
           curl -sSL $ADGUARD_CHINESE_FILTER | tr -d "\r" | sed -e '/^! /d' -e '1c ! AdGuard Chinese filter' -e '/^!$/d' -e '/^$/d' > ./adguardchinesefilter.txt
           curl -sSL $EASYPRIVACY_URL | sed -e '/^! /d' -e '1c ! EasyPrivacy' -e '/^!$/d' > ./easyprivacy.txt
           curl -sSL $CJXLIST_URL | sed -e '/^! /d' -e '1c ! EasyList Lite' -e '/^!$/d' -e '/The End/d' -e '/^$/d' > ./cjxlist.txt
-          curl -sSL $CJX_ANNOYANCE_URL | sed -e '/^! /d' -e "1c ! CJX's Annoyance List" -e '/^!$/d' -e '/The End/d' -e '/^$/d' | sed '/热门话题/,+1d' > ./cjx-annoyance.txt
-          sed -i '/!#include cjx-ublock.txt/c !#include https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-ublock.txt' ./cjx-annoyance.txt
+          curl -sSL $CJX_ANNOYANCE_URL | sed -e '/^! /d' -e "1c ! CJX's Annoyance List\n\!#include cjx-ublock.txt" -e '/^!$/d' -e '/The End/d' -e '/^$/d' | sed '/热门话题/,+1d' > ./cjx-annoyance.txt
+          curl -sSL $CJX_UBLOCK_URL | sed -e '/^! /d' -e "1c ! CJX's uBlock list" -e '/^!$/d' -e '/The End/d' -e '/^$/d' > ./cjx-ublock.txt
+          # sed -i '/!#include cjx-ublock.txt/c !#include https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-ublock.txt' ./cjx-annoyance.txt
           curl -sSL $XINGGSF_MV_URL | sed -e '/^! /d' -e '1c ! 乘风 视频广告过滤规则' -e '/^!$/d' -e '/^$/d' > ./xinggsf-mv.txt
           curl -sSL $ANTIADBLOCKFILTERS_URL | sed -e '1c ! Adblock Warning Removal List' -e '/^! Checksum/,/! Please check our guidelines/d' -e '/^!$/d' -e '/The End/d' -e '/^$/d' > ./antiadblockfilters.txt
           curl -sSL $ABP_FILTERS_ANTI_CV_URL | sed -e '1c ! abp-filters-anti-cv' -e '/^! Checksum/,/adblockplus.org/d' -e '/^!$/d' -e '/The End/d' -e '/^$/d' > ./abp-filters-anti-cv.txt
@@ -75,6 +77,7 @@ jobs:
           cat xinggsf-mv.txt adguardchinesefilter.txt cjxlist.txt cjx-annoyance.txt > ../new/ad2.txt
           cat xinggsf-mv.txt adguardchinesefilter.txt cjxlist.txt cjx-annoyance.txt easyprivacy.txt > ../new/ad3.txt
           cat antiadblockfilters.txt abp-filters-anti-cv.txt anti-adblock-killer-filters.txt > ../new/ad-edentw.txt
+          cp cjx-ublock.txt ../new/cjx-ublock.txt
           for i in $(ls ../new/*.txt); do
             sed -i '/^$/d' $i
           done
