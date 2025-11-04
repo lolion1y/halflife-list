@@ -77,7 +77,6 @@ jobs:
           cat xinggsf-mv.txt adguardchinesefilter.txt cjxlist.txt cjx-annoyance.txt > ../new/ad2.txt
           cat xinggsf-mv.txt adguardchinesefilter.txt cjxlist.txt cjx-annoyance.txt easyprivacy.txt > ../new/ad3.txt
           cat antiadblockfilters.txt abp-filters-anti-cv.txt anti-adblock-killer-filters.txt > ../new/ad-edentw.txt
-          cp cjx-ublock.txt ../new/cjx-ublock.txt
           for i in $(ls ../new/*.txt); do
             sed -i '/^$/d' $i
           done
@@ -101,7 +100,7 @@ jobs:
               perl ./mod/addChecksum.pl ./release/$i
               echo "status=success" >> $GITHUB_OUTPUT
             done
-            cp ./new/cjx-ublock.txt ./release/cjx-ublock.txt
+            cp ./download/cjx-ublock.txt ./release/cjx-ublock.txt
           else
             echo "status=failed" >> $GITHUB_OUTPUT
           fi
